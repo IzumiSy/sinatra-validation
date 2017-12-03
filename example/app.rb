@@ -26,4 +26,15 @@ class Application < Sinatra::Base
 
     body "OK silent"
   end
+
+  get '/json' do
+    content_type :json
+
+    validates do
+      required("name").filled(:str?)
+      required("age").filled(:str?)
+    end
+
+    body "OK json"
+  end
 end
