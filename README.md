@@ -1,4 +1,5 @@
 # Sinatra::Validation
+[![CircleCI](https://circleci.com/gh/IzumiSy/sinatra-validation.svg?style=shield)](https://circleci.com/gh/IzumiSy/sinatra-validation)
 
 > Sinatra extension for request parameter validation powered with dry-validation
 
