@@ -17,12 +17,12 @@ class Application < Sinatra::Base
   end
 
   get '/silent' do
-    content_type :json
-
-    validates silent: true do
+    result = validates silent: true do
       required("name").filled(:str?)
       required("age").filled(:str?)
     end
+
+    p result
 
     body "OK silent"
   end
