@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["beetle-noise@gmx.com"]
 
   spec.summary       = %q{ "Sinatra extension for request parameter validation" }
-  spec.description   = %q{ "sinatra-validation is a gem to define parameter validation with dry-validation and sinatra-errorcodes "}
+  spec.description   = %q{ "sinatra-validation is a gem to define parameter validation with dry-validation"}
   spec.homepage      = "https://github.com/IzumiSy/sinatra-validation"
   spec.license       = "MIT"
 
@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'sinatra'
   spec.add_dependency 'sinatra-contrib'
-  spec.add_dependency 'sinatra-errorcodes'
   spec.add_dependency 'dry-validation'
 
   spec.add_development_dependency "bundler", "~> 1.14"
