@@ -12,27 +12,19 @@ class Application < Sinatra::Base
       required('name').filled(:str?)
     end
 
-    body 'OK basic'
-  end
-
-  get '/json' do
-    content_type :json
-
-    validates do
-      required('name').filled(:str?)
-    end
-
-    body 'OK json'
+    'ok'
   end
 
   get '/silent' do
+    content_type :json
+
     result = validates silent: true do
       required('name').filled(:str?)
     end
 
     p result
 
-    body 'OK silent'
+    'ok'
   end
 
   get '/raise' do
@@ -40,6 +32,6 @@ class Application < Sinatra::Base
       required('name').filled(:str?)
     end
 
-    body 'OK raise'
+    'ok'
   end
 end
