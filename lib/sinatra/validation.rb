@@ -1,5 +1,4 @@
 require "sinatra/validation/version"
-require "sinatra/errorcodes"
 require "dry-validation"
 
 module Sinatra
