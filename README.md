@@ -1,4 +1,5 @@
 # Sinatra::Validation
+[![Gem Version](https://badge.fury.io/rb/sinatra-validation.svg)](https://badge.fury.io/rb/sinatra-validation)
 [![CircleCI](https://circleci.com/gh/IzumiSy/sinatra-validation.svg?style=shield)](https://circleci.com/gh/IzumiSy/sinatra-validation)
 
 > Sinatra extension for request parameter validation powered with dry-validation
