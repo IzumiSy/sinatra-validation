@@ -11,7 +11,7 @@ module Sinatra
     end
 
     module Helpers
-      def validates(silent = false, &block)
+      def validates(options = {}, &block)
         schema = Dry::Validation.Schema(&block)
         validation = schema.call(params)
 
@@ -20,11 +20,16 @@ module Sinatra
         end
 
         errors = validation.messages(full: true).values.flatten;
-        if silent || settings.silent_validation
+        if options[:silent] || settings.silent_validation
           return Result.new(validation.output, errors)
         end
+
         raise InvalidParameterError.new(params: validation.output, messages: errors)
       rescue InvalidParameterError => exception
+        if options[:raise] || settings.raise_sinatra_validation_exception
+          raise exception
+        end
+
         error = exception.to_s
 
         if content_type && content_type.match(mime_type(:json))
@@ -38,6 +43,7 @@ module Sinatra
     def self.registered(app)
       app.helpers Validation::Helpers
       app.set :silent_validation, false
+      app.set :raise_sinatra_validation_exception, false
     end
   end
 end
