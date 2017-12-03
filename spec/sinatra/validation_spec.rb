@@ -20,7 +20,7 @@ RSpec.describe Sinatra::Validation do
     expect(last_response.status).to eql(200)
   end
 
-  it "return 500 with `raise` option enabled" do
+  it "raises an exception with `raise` option enabled" do
     expect {
       get '/raise'
     }.to raise_error(Sinatra::Validation::InvalidParameterError)
