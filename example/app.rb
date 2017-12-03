@@ -7,15 +7,23 @@ class Application < Sinatra::Base
     register Sinatra::Validation
   end
 
-  before do
-    content_type :json
-  end
-
-  get '/user' do
-    permitted_params = validates do
+  get '/basic' do
+    validates do
       required("name").filled(:str?)
+      required("age").filled(:str?)
     end
 
-    body "name: #{permitted_params[:name]}"
+    body "OK basic"
+  end
+
+  get '/silent' do
+    content_type :json
+
+    validates silent: true do
+      required("name").filled(:str?)
+      required("age").filled(:str?)
+    end
+
+    body "OK silent"
   end
 end
