@@ -1,8 +1,6 @@
 # Sinatra::Validation
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sinatra/validation`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+> Sinatra extension for request parameter validation powered with dry-validation
 
 ## Installation
 
@@ -12,17 +10,46 @@ Add this line to your application's Gemfile:
 gem 'sinatra-validation'
 ```
 
-And then execute:
-
-    $ bundle
-
 Or install it yourself as:
 
     $ gem install sinatra-validation
 
 ## Usage
+Register `Sinatra::Validation` to your Sinatra application.
+```ruby
+class Application < Sinatra::Base
+  configure do
+    register Sinatra::Validation
+  end
+end
+```
+Now you can use `validates` helper in your routes. The validation logic itself is implemented by [dry-validation](http://dry-rb.org/gems/dry-validation/) internally, so follow the validation syntax provided by the gem.
+```ruby
+  get '/basic' do
+    validates do
+      required("name").filled(:str?)
+      required("age").filled(:str?)
+    end
 
-TODO: Write usage instructions here
+    ...
+  end
+```
+The helper throws `Sinatra::Validation::InvalidParameterError` if `params` does not meet the given validation rule.
+
+### Silent
+You can suppress the exception `validates` helper throws when the validation fails by setting `silent` option to true.
+```ruby
+  get '/silent' do
+    result = validates silent: true do
+      required("name").filled(:str?)
+      required("age").filled(:str?)
+    end
+
+    p result # <struct Struct::Result params={"name"=>"aa"}, messages=["age is missing"]>
+    
+    ...
+  end
+```
 
 ## Development
 
