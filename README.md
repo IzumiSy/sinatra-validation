@@ -34,10 +34,10 @@ Now you can use `validates` helper in your routes. The validation logic itself i
     ...
   end
 ```
-The helper throws `Sinatra::Validation::InvalidParameterError` if `params` does not meet the given validation rule.
+The helper halts with 400 if `params` does not meet the given validation rule.
 
 ### Silent
-You can suppress the exception `validates` helper throws when the validation fails by setting `silent` option to true.
+You can suppress the default behavior which `validates` helper halts with 400 when the validation fails by setting `silent` option to true. With the option, `validates` helper returns the instance of `Validation::Result`.
 ```ruby
   get '/silent' do
     result = validates silent: true do
@@ -48,6 +48,30 @@ You can suppress the exception `validates` helper throws when the validation fai
     p result # <struct Sinatra::Validation::Result params={"name"=>"justine"}, messages=["age is missing"]>
 
     ...
+  end
+```
+You can do `enable :silent_validation` in your Sinatra application instead if you want to enable this option to all validations.
+### Raise
+By default, `validates` helper halts with 400, but if you set the option `raise` to true, you can make `validates` helper raise the exception instead.
+```ruby
+  get '/raise' do
+    begin
+      validates raise: true do
+        required("name").filled(:str?)
+      end
+    rescue => exception
+      p exception # <Sinatra::Validation::InvalidParameterError: {:params=>{}, :messages=>["name is missing"]}>
+    end
+
+    ...
+  end
+```
+if you want to enable this option to all validations, you can do `enable :raise_sinatra_validation_exception` in your Sinatra application instead. Then, you can catch the exception in `error` block or something.
+```ruby
+  enable :raise_sinatra_validation_exception
+
+  error Sinatra::Validation::InvalidParameterError do
+    # do something
   end
 ```
 
