@@ -3,20 +3,23 @@ require "dry-validation"
 
 module Sinatra
   module Validation
+    class InvalidParameterError < StandardError
+      attr_accessor :params, :messages
+    end
+
     module Helpers
-      def validates(&block)
+      def validates(silent = false, &block)
         schema = Dry::Validation.Schema(&block)
+        result = Struct.new("Result", :params, :messages)
         validation = schema.call(params)
 
         if validation.success?
-          return validation.output
+          return result.new(validation.output)
         end
 
-        if defined?(HTTPError)
-          raise HTTPError::BadRequest
-        else
-          halt 400, 'Bad Request'
-        end
+        errors = validation.messages(full: true).values.flatten;
+        return result.new(validation.output, errors) if silent
+        raise InvalidParameterError.new(params: validation.output, messages: errors)
       end
     end
 
