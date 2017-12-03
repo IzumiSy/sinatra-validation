@@ -9,32 +9,37 @@ class Application < Sinatra::Base
 
   get '/basic' do
     validates do
-      required("name").filled(:str?)
-      required("age").filled(:str?)
+      required('name').filled(:str?)
     end
 
-    body "OK basic"
-  end
-
-  get '/silent' do
-    result = validates silent: true do
-      required("name").filled(:str?)
-      required("age").filled(:str?)
-    end
-
-    p result
-
-    body "OK silent"
+    body 'OK basic'
   end
 
   get '/json' do
     content_type :json
 
     validates do
-      required("name").filled(:str?)
-      required("age").filled(:str?)
+      required('name').filled(:str?)
     end
 
-    body "OK json"
+    body 'OK json'
+  end
+
+  get '/silent' do
+    result = validates silent: true do
+      required('name').filled(:str?)
+    end
+
+    p result
+
+    body 'OK silent'
+  end
+
+  get '/raise' do
+    validates raise: true do
+      required('name').filled(:str?)
+    end
+
+    body 'OK raise'
   end
 end
