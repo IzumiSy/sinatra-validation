@@ -45,8 +45,8 @@ You can suppress the exception `validates` helper throws when the validation fai
       required("age").filled(:str?)
     end
 
-    p result # <struct Struct::Result params={"name"=>"aa"}, messages=["age is missing"]>
-    
+    p result # <struct Sinatra::Validation::Result params={"name"=>"justine"}, messages=["age is missing"]>
+
     ...
   end
 ```
