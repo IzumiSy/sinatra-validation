@@ -28,10 +28,14 @@ class Application < Sinatra::Base
   end
 
   get '/raise' do
-    validates raise: true do
-      required('name').filled(:str?)
-    end
+    begin
+      validates raise: true do
+        required('name').filled(:str?)
+      end
 
-    'ok'
+      'ok'
+    rescue Sinatra::Validation::InvalidParameterError
+      halt 500, 'invalid'
+    end
   end
 end
