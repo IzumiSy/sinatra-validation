@@ -29,8 +29,10 @@ Now you can use `validates` helper in your routes. The validation logic itself i
 ```ruby
   get '/basic' do
     validates do
-      required("name").filled(:str?)
-      required("age").filled(:str?)
+      params do
+        required("name").filled(:str?)
+        required("age").filled(:str?)
+      end
     end
 
     ...
@@ -43,8 +45,10 @@ You can suppress the default behavior which `validates` helper halts with 400 wh
 ```ruby
   get '/silent' do
     result = validates silent: true do
-      required("name").filled(:str?)
-      required("age").filled(:str?)
+      params do
+        required("name").filled(:str?)
+        required("age").filled(:str?)
+      end
     end
 
     p result # <struct Sinatra::Validation::Result params={"name"=>"justine"}, messages=["age is missing"]>
@@ -59,10 +63,12 @@ By default, `validates` helper halts with 400, but if you set the option `raise`
   get '/raise' do
     begin
       validates raise: true do
-        required("name").filled(:str?)
+        params do
+          required("name").filled(:str?)
+        end
       end
-    rescue => exception
-      p exception # <Sinatra::Validation::InvalidParameterError: {:params=>{}, :messages=>["name is missing"]}>
+    rescue => e
+      p e.result # <Sinatra::Validation::InvalidParameterError: {:params=>{}, :messages=>["name is missing"]}>
     end
 
     ...
@@ -73,7 +79,7 @@ if you want to enable this option to all validations, you can do `enable :raise_
   enable :raise_sinatra_validation_exception
 
   error Sinatra::Validation::InvalidParameterError do
-    # do something
+    # do anything you want
   end
 ```
 

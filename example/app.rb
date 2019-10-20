@@ -9,7 +9,9 @@ class Application < Sinatra::Base
 
   get '/basic' do
     validates do
-      required('name').filled(:str?)
+      params do
+        required(:name).filled(:str?)
+      end
     end
 
     'ok'
@@ -19,10 +21,10 @@ class Application < Sinatra::Base
     content_type :json
 
     result = validates silent: true do
-      required('name').filled(:str?)
+      params do
+        required(:name).filled(:str?)
+      end
     end
-
-    p result
 
     'ok'
   end
@@ -30,11 +32,13 @@ class Application < Sinatra::Base
   get '/raise' do
     begin
       validates raise: true do
-        required('name').filled(:str?)
+        params do
+          required(:name).filled(:str?)
+        end
       end
 
       'ok'
-    rescue Sinatra::Validation::InvalidParameterError
+    rescue Sinatra::Validation::InvalidParameterError => e
       halt 500, 'invalid'
     end
   end

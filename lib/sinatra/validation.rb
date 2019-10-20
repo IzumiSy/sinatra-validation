@@ -4,33 +4,46 @@ require "dry-validation"
 module Sinatra
   module Validation
     class InvalidParameterError < StandardError
-      attr_accessor :params, :messages
+      attr_reader :result
+
+      def initialize(result) 
+        @result = result
+      end
     end
 
-    class Result < Struct.new("Result", :params, :messages)
+    class Result
+      attr_reader :params, :messages
+
+      def initialize(params)
+        @params = params
+      end
+
+      def with_message(errors)
+        @messages = errors.to_h.map { |key, message| "#{key.to_s} #{message.first}" }
+        self
+      end
     end
 
     module Helpers
       def validates(options = {}, &block)
-        schema = Dry::Validation.Schema(&block)
+        schema = Class.new(Dry::Validation::Contract, &block).new
         validation = schema.call(params)
+        result = Result.new(params).with_message(validation.errors)
 
-        if validation.success?
-          return Result.new(validation.output)
-        end
-
-        errors = validation.messages(full: true).values.flatten;
         if options[:silent] || settings.silent_validation
-          return Result.new(validation.output, errors)
+          return result
         end
 
-        raise InvalidParameterError.new(params: validation.output, messages: errors)
+        if validation.failure?
+          raise InvalidParameterError.new(result)
+        end
       rescue InvalidParameterError => exception
         if options[:raise] || settings.raise_sinatra_validation_exception
           raise exception
         end
 
-        error = exception.to_s
+        errors = exception.result.messages
+        error = errors.first
 
         if content_type && content_type.match(mime_type(:json))
           error = { errors: errors }.to_json
