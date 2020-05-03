@@ -5,7 +5,12 @@ RSpec.describe Sinatra::Validation do
     expect(Sinatra::Validation::VERSION).not_to be nil
   end
 
-  it "returns 200" do
+  it 'returns 200 as POST' do
+    post '/post', { name: "justine" }, as: :json
+    expect(last_response.status).to eql(200)
+  end
+
+  it "returns 200 as GET" do
     get '/basic?name=justine'
     expect(last_response.status).to eql(200)
   end
