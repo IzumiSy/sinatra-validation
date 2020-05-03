@@ -1,3 +1,4 @@
+require 'rack/contrib'
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/validation'
@@ -5,6 +6,8 @@ require 'sinatra/validation'
 class Application < Sinatra::Base
   configure do
     register Sinatra::Validation
+
+    use Rack::JSONBodyParser
   end
 
   get '/basic' do
