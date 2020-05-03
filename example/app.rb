@@ -2,12 +2,25 @@ require 'rack/contrib'
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/validation'
+require 'pry' if development? or test?
 
 class Application < Sinatra::Base
   configure do
     register Sinatra::Validation
 
     use Rack::JSONBodyParser
+  end
+
+  post '/post' do
+    content_type :json
+
+    validates do
+      params do
+        required(:name).filled(:str?)
+      end
+    end
+
+    'ok'
   end
 
   get '/basic' do
@@ -23,7 +36,7 @@ class Application < Sinatra::Base
   get '/silent' do
     content_type :json
 
-    result = validates silent: true do
+    validates silent: true do
       params do
         required(:name).filled(:str?)
       end
