@@ -3,22 +3,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.4.4-jessie
-        environment:
-          BUNDLER_VERSION: 2.0.2
+      - image: circleci/ruby:2.6.6
 
     working_directory: ~/repo
 
     steps:
       - checkout
-
-      - run:
-          name: setup bundler 2
-          command: |
-            sudo gem update --system
-            sudo gem uninstall -ax bundler
-            sudo gem install bundler
-
       - run: 
           name: install deps
           command: |
