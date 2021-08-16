@@ -30,4 +30,16 @@ RSpec.describe Sinatra::Validation do
     expect(last_response.status).to eql(500)
     expect(last_response.body).to eql('invalid')
   end
+
+  it "filter params with `filter_unpermitted_params`" do
+    get '/filter?allowed=ok&filtered=nok'
+    expect(last_response.status).to eql(200)
+    expect(last_response.body).to eql("allowed=ok")
+  end
+
+  it "filter params and set them in result" do
+    get '/result?allowed=ok&filtered=nok'
+    expect(last_response.status).to eql(200)
+    expect(last_response.body).to eql("allowed=ok")
+  end
 end

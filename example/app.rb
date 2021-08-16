@@ -58,4 +58,22 @@ class Application < Sinatra::Base
       halt 500, 'invalid'
     end
   end
+
+  get '/filter' do
+    validates filter_unpermitted_params: true do
+      params do
+        optional(:allowed).filled(:str?)
+      end
+    end
+    params.map{|k, v| "#{k}=#{v}"}.join(' ')
+  end
+
+  get '/result' do
+    result = validates do
+      params do
+        optional(:allowed).filled(:str?)
+      end
+    end
+    result.params.map{|k, v| "#{k}=#{v}"}.join(' ')
+  end
 end
