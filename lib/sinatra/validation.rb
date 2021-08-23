@@ -28,7 +28,12 @@ module Sinatra
       def validates(options = {}, &block)
         schema = Class.new(Dry::Validation::Contract, &block).new
         validation = schema.call(params)
-        result = Result.new(params).with_message(validation.errors)
+        result = Result.new(Sinatra::IndifferentHash[validation.to_h])
+          .with_message(validation.errors)
+
+        if options[:filter_unpermitted_params] || settings.filter_unpermitted_params
+          params.replace validation.to_h
+        end
 
         if options[:silent] || settings.silent_validation
           return result
@@ -37,6 +42,8 @@ module Sinatra
         if validation.failure?
           raise InvalidParameterError.new(result)
         end
+
+        result
       rescue InvalidParameterError => exception
         if options[:raise] || settings.raise_sinatra_validation_exception
           raise exception
@@ -57,6 +64,7 @@ module Sinatra
       app.helpers Validation::Helpers
       app.set :silent_validation, false
       app.set :raise_sinatra_validation_exception, false
+      app.set :filter_unpermitted_params, false
     end
   end
 end
