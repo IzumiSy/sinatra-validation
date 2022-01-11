@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'sinatra', '~> 2.0.7'
+  spec.add_dependency 'sinatra', '~> 2.1.0'
   spec.add_dependency 'rack', '>= 2.0.6'
   spec.add_dependency 'dry-validation', '~> 1.3'
 
