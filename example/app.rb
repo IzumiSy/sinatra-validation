@@ -59,6 +59,19 @@ class Application < Sinatra::Base
     end
   end
 
+  get '/rule/:value' do
+    validates do
+      params do
+        optional(:value).filled(:str?)
+      end
+      rule(:value) do
+        key.failure('Invalid param') unless value.match?(/^[a-z]+$/)
+      end
+    end
+
+    'ok'
+  end
+
   get '/filter' do
     validates filter_unpermitted_params: true do
       params do
@@ -76,4 +89,5 @@ class Application < Sinatra::Base
     end
     result.params.map{|k, v| "#{k}=#{v}"}.join(' ')
   end
+
 end

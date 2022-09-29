@@ -42,4 +42,16 @@ RSpec.describe Sinatra::Validation do
     expect(last_response.status).to eql(200)
     expect(last_response.body).to eql("allowed=ok")
   end
+
+  it "returns 200 if the parameter meets the rule" do
+    get '/rule/abcdef'
+    expect(last_response.status).to eql(200)
+    expect(last_response.body).to eql("ok")
+  end
+
+  it "returns 400 if the parameter does not meet the rule" do
+    get '/rule/abc1234def'
+    expect(last_response.status).to eql(400)
+    expect(last_response.body).to eql("value Invalid param")
+  end
 end
