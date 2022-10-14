@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:3.1.2
+      - image: ruby:3.1.2
 
     working_directory: ~/repo
 
