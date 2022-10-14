@@ -3,18 +3,18 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.6.6
+      - image: circleci/ruby:3.1.1
 
     working_directory: ~/repo
 
     steps:
       - checkout
-      - run: 
+      - run:
           name: install deps
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
-      - run: 
+      - run:
           name: run tests
           command: |
             bundle exec rake spec
