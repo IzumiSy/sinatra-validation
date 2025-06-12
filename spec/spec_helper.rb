@@ -2,7 +2,10 @@ require 'rspec'
 require 'rack/test'
 require 'bundler/setup'
 require 'sinatra/validation'
-require_relative '../example/app.rb'
+
+ENV['RACK_ENV'] = 'test'
+
+require_relative '../example/app'
 
 RSpec.configure do |config|
   include Rack::Test::Methods

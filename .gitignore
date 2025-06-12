@@ -9,5 +9,9 @@
 /vendor/
 /tmp/
 
+/example/Gemfile.lock
+/example/vendor/
+
 # rspec failure tracking
 .rspec_status
+.vscode/settings.json
