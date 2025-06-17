@@ -1,6 +1,7 @@
 # Sinatra::Validation
 ![Gem Version](https://badge.fury.io/rb/sinatra-validation.svg)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/IzumiSy/sinatra-validation/test.yaml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/IzumiSy/sinatra-validation/test.yaml?branch=master)
+
 
 > Sinatra extension for request parameter validation powered with dry-validation
 
