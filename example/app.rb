@@ -2,13 +2,18 @@ require 'rack/contrib'
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/validation'
-require 'pry' if development? or test?
+require 'pry' if development? || test?
 
 class Application < Sinatra::Base
   configure do
     register Sinatra::Validation
 
     use Rack::JSONBodyParser
+  end
+
+  configure :test do
+    # Disable all protection for rack
+    set :protection, false
   end
 
   post '/post' do
@@ -46,17 +51,15 @@ class Application < Sinatra::Base
   end
 
   get '/raise' do
-    begin
-      validates raise: true do
-        params do
-          required(:name).filled(:str?)
-        end
+    validates raise: true do
+      params do
+        required(:name).filled(:str?)
       end
-
-      'ok'
-    rescue Sinatra::Validation::InvalidParameterError => e
-      halt 500, 'invalid'
     end
+
+    'ok'
+  rescue Sinatra::Validation::InvalidParameterError
+    halt 500, 'invalid'
   end
 
   get '/rule/:value' do
@@ -78,7 +81,7 @@ class Application < Sinatra::Base
         optional(:allowed).filled(:str?)
       end
     end
-    params.map{|k, v| "#{k}=#{v}"}.join(' ')
+    params.map { |k, v| "#{k}=#{v}" }.join(' ')
   end
 
   get '/result' do
@@ -87,7 +90,6 @@ class Application < Sinatra::Base
         optional(:allowed).filled(:str?)
       end
     end
-    result.params.map{|k, v| "#{k}=#{v}"}.join(' ')
+    result.params.map { |k, v| "#{k}=#{v}" }.join(' ')
   end
-
 end
