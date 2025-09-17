@@ -2,7 +2,6 @@
 ![Gem Version](https://badge.fury.io/rb/sinatra-validation.svg)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/IzumiSy/sinatra-validation/test.yaml?branch=master)
 
-
 > Sinatra extension for request parameter validation powered with dry-validation
 
 ## Installation
@@ -18,6 +17,7 @@ Or install it yourself as:
     $ gem install sinatra-validation
 
 ## Usage
+
 Register `Sinatra::Validation` to your Sinatra application.
 ```ruby
 class Application < Sinatra::Base
@@ -42,6 +42,7 @@ Now you can use `validates` helper in your routes. The validation logic itself i
 The helper halts with 400 if `params` does not meet the given validation rule.
 
 ### Silent
+
 You can suppress the default behavior which `validates` helper halts with 400 when the validation fails by setting `silent` option to true. With the option, `validates` helper returns the instance of `Validation::Result`.
 ```ruby
   get '/silent' do
@@ -58,7 +59,9 @@ You can suppress the default behavior which `validates` helper halts with 400 wh
   end
 ```
 You can do `enable :silent_validation` in your Sinatra application instead if you want to enable this option to all validations.
+
 ### Raise
+
 By default, `validates` helper halts with 400, but if you set the option `raise` to true, you can make `validates` helper raise the exception instead.
 ```ruby
   get '/raise' do
@@ -82,6 +85,13 @@ if you want to enable this option to all validations, you can do `enable :raise_
   error Sinatra::Validation::InvalidParameterError do
     # do anything you want
   end
+```
+
+## Example
+
+```
+$ cd example
+$ bundle exec rackup
 ```
 
 ## Development
